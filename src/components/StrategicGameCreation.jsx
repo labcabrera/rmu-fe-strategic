@@ -11,8 +11,8 @@ const StrategicGameCreation = () => {
 
     const [formData, setFormData] = useState({
         name: '',
-        description: '',
-        user: "lab.cabrera@gmail.com"
+        realm: '',
+        description: ''
     });
 
     const handleSubmit = (e) => {
@@ -22,9 +22,9 @@ const StrategicGameCreation = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
         };
-        fetch("http://localhost:3001/v1/tactical-games", requestOptions)
+        fetch("http://localhost:3003/v1/strategic-games", requestOptions)
             .then(response => response.json())
-            .then(data => navigate("/tactical/view/" + data._id, { state: { game: data } }));
+            .then(data => navigate("/strategic/view/" + data.id, { state: { game: data } }));
     }
 
     const handleChange = (e) => {
@@ -44,6 +44,14 @@ const StrategicGameCreation = () => {
                     onChange={handleChange}
                     margin="normal"
                     required />
+                <TextField
+                    label="Realm"
+                    variant="outlined"
+                    name="realm"
+                    value={formData.realm}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal" />
                 <TextField
                     label="Description"
                     variant="outlined"

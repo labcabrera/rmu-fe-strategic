@@ -33,7 +33,7 @@ const StrategicGameList = () => {
     };
 
     const createNewGame = async () => {
-        navigate("/tactical/creation");
+        navigate("/strategic/creation");
     };
 
     const handleSnackbarClose = () => {
