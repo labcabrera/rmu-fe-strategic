@@ -5,8 +5,10 @@
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "build:start": "cd dist && PORT=8081 npx serve",
-    "start": "webpack serve --mode development",
+    "start": "webpack serve --mode production",
+    "start:local": "webpack serve --mode production --env local",
     "start:live": "webpack serve --mode development --live-reload --hot",
+    "start:docker": "webpack serve --mode production --env docker",
     "tailwind": "npx tailwindcss -i ./src/source.css -o ./src/index.css"
   },
   "license": "GNU GENERAL PUBLIC LICENSE V3",

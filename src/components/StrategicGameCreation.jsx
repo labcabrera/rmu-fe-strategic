@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
+import { API_STRATEGIC_URL } from "../constants/environment";
+
 const StrategicGameCreation = () => {
     const navigate = useNavigate();
 
@@ -17,12 +19,13 @@ const StrategicGameCreation = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const url = `${API_STRATEGIC_URL}/strategic-games`;
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
         };
-        fetch("http://localhost:3003/v1/strategic-games", requestOptions)
+        fetch(url, requestOptions)
             .then(response => response.json())
             .then(data => navigate("/strategic/view/" + data.id, { state: { game: data } }));
     }

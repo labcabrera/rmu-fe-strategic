@@ -10,7 +10,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = (_, argv) => ({
   output: {
-    publicPath: "http://localhost:8083/",
+    publicPath: "http://localhost:8082/",
     //publicPath: "https://rmu-tactical.netlify.app/",
   },
 
@@ -19,7 +19,7 @@ module.exports = (_, argv) => ({
   },
 
   devServer: {
-    port: 8083,
+    port: 8082,
     historyApiFallback: true,
     watchFiles: [path.resolve(__dirname, "src")],
     onListening: function (devServer) {

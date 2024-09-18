@@ -10,6 +10,8 @@ import Stack from '@mui/material/Stack';
 
 import StrategicGameListItem from "./StrategicGameListItem";
 
+import { API_STRATEGIC_URL } from "../constants/environment";
+
 const StrategicGameList = () => {
 
     const debugMode = true;
@@ -20,15 +22,16 @@ const StrategicGameList = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const getGames = async () => {
+        const url = `${API_STRATEGIC_URL}/strategic-games`;
         try {
-            const response = await fetch("http://localhost:3003/v1/strategic-games", {
-                method: "GET",
-            });
+            console.log("fetch url: " + url);
+            const response = await fetch(url, { method: "GET", });
+            console.log("response: " + response);
             const data = await response.json();
             setGames(data.content);
         } catch (error) {
             setDisplayError(true);
-            setErrorMessage(error.message);
+            setErrorMessage(`Error loading strategic games from ${url}. ${error.message}`);
         }
     };
 

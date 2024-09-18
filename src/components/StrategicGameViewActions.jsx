@@ -14,7 +14,7 @@ const StrategicGameViewActions = () => {
 
     const deleteGame = async () => {
         console.log("delete game " + gameId);
-        const response = await fetch("http://localhost:3003/v1/strategic-games/" + game.id, {
+        const response = await fetch("http://localhost:3001/v1/strategic-games/" + game.id, {
             method: "DELETE",
         });
         const deleteResponse = await response;
