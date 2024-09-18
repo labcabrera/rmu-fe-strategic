@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
+import CancelIcon from '@mui/icons-material/Cancel';
 import SaveIcon from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 
 import { API_STRATEGIC_URL } from "../constants/environment";
 
@@ -44,6 +45,10 @@ const StrategicGameEdit = () => {
         }
     }
 
+    const handleCancelClick = (e) => {
+        navigate(`/strategic/view/${strategicGame.id}`, { state: { strategicGame: strategicGame } });
+    }
+
     return (
         <div>
             <div class="strategic-game-view">
@@ -52,6 +57,9 @@ const StrategicGameEdit = () => {
                         justifyContent: "flex-end",
                         alignItems: "flex-start",
                     }}>
+                        <IconButton variant="outlined" onClick={handleCancelClick}>
+                            <CancelIcon />
+                        </IconButton>
                         <IconButton variant="outlined" onClick={handleSubmit}>
                             <SaveIcon />
                         </IconButton>
