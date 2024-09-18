@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import Box from '@mui/material/Box';
@@ -6,12 +6,31 @@ import TextField from '@mui/material/TextField';
 
 import StrategicGameViewActions from "./StrategicGameViewActions";
 
+import { API_CORE_URL } from "../constants/environment";
 
 const StrategicGameView = () => {
 
     const debugMode = false;
     const location = useLocation();
     const strategicGame = location.state?.strategicGame;
+
+    const [realmName, setRealmName] = useState(strategicGame.realm);
+
+    const getRealmName = async () => {
+        const url = `${API_CORE_URL}/realms/${strategicGame.realm}`;
+        try {
+            const response = await fetch(url, { method: "GET", });
+            const data = await response.json();
+            setRealmName(data.name);
+        } catch (error) {
+            //TODO
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getRealmName();
+    }, []);
 
     return (
         <div class="strategic-game-view">
@@ -28,7 +47,7 @@ const StrategicGameView = () => {
                 <TextField
                     label="Realm"
                     name="realm"
-                    value={strategicGame.realm}
+                    value={realmName}
                     disabled
                     size="small" />
                 <TextField
@@ -68,6 +87,9 @@ const StrategicGameView = () => {
                     </pre>
                     <pre>
                         {JSON.stringify(location.state, null, 2)}
+                    </pre>
+                    <pre>
+                        {JSON.stringify(realmName, null, 2)}
                     </pre>
                 </div>
             ) : null}
