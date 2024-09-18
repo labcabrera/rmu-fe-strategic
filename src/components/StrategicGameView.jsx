@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -9,65 +9,56 @@ import StrategicGameViewActions from "./StrategicGameViewActions";
 
 const StrategicGameView = () => {
 
-    const debugMode = true;
-    const { gameId } = useParams();
+    const debugMode = false;
     const location = useLocation();
-    const game = location.state?.game;
+    const strategicGame = location.state?.strategicGame;
 
     return (
-        <div class="tactical-game-view">
-
+        <div class="strategic-game-view">
             <StrategicGameViewActions />
+            <Box component="form"
+                sx={{ '& > :not(style)': { m: 1, width: '80ch' } }}>
 
-            <Box
-                component="form"
-                _sx={{ flexGrow: 1 }}
-                sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
-            >
-                <div>
-                    <TextField
-                        label="Name"
-                        name="name"
-                        value={game.name}
-                        slotProps={{
-                            input: {
-                                readOnly: true,
-                            },
-                        }} />
-                </div>
-                <div>
-                    <TextField
-                        label="Status"
-                        name="status"
-                        value={game.status}
-                    ></TextField>
-                </div>
-                <div>
-                    <TextField
-                        label="Description"
-                        name="description"
-                        value={game.description}
-                    ></TextField>
-                </div>
-                <div>
-                    <TextField
-                        label="User"
-                        name="user"
-                        value={game.user}
-                    ></TextField>
-                </div>
-                <div>
-                    <TextField
-                        label="createdAt"
-                        name="createdAt"
-                        value={game.createdAt}
-                    ></TextField>
-                </div>
+                <TextField
+                    label="Name"
+                    name="name"
+                    value={strategicGame.name}
+                    disabled
+                    size="small" />
+                <TextField
+                    label="Description"
+                    name="description"
+                    value={strategicGame.description}
+                    disabled
+                    size="small"
+                    multiline
+                    maxRows={4} />
+                <TextField
+                    label="User"
+                    name="user"
+                    value={strategicGame.user}
+                    disabled
+                    size="small"
+                />
+                <TextField
+                    label="Created"
+                    name="createdAt"
+                    value={strategicGame.createdAt}
+                    disabled
+                    size="small"
+                />
+                <TextField
+                    label="Updated"
+                    name="createdAt"
+                    value={strategicGame.updatedAt}
+                    disabled
+                    size="small"
+                />
             </Box >
             {debugMode ? (
                 <div>
                     <pre>
-                        {JSON.stringify(game, null, 2)}
+                        {JSON.stringify(strategicGame, null, 2)}
                     </pre>
                     <pre>
                         {JSON.stringify(location.state, null, 2)}

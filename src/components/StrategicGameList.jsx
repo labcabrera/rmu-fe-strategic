@@ -15,20 +15,19 @@ import { API_STRATEGIC_URL } from "../constants/environment";
 const StrategicGameList = () => {
 
     const debugMode = true;
-    const navigate = useNavigate();
-    const [games, setGames] = useState([]);
 
+    const navigate = useNavigate();
+
+    const [strategicGames, setStrategicGames] = useState([]);
     const [displayError, setDisplayError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    const getGames = async () => {
+    const getStrategicGames = async () => {
         const url = `${API_STRATEGIC_URL}/strategic-games`;
         try {
-            console.log("fetch url: " + url);
             const response = await fetch(url, { method: "GET", });
-            console.log("response: " + response);
             const data = await response.json();
-            setGames(data.content);
+            setStrategicGames(data.content);
         } catch (error) {
             setDisplayError(true);
             setErrorMessage(`Error loading strategic games from ${url}. ${error.message}`);
@@ -44,13 +43,12 @@ const StrategicGameList = () => {
     };
 
     useEffect(() => {
-        getGames();
+        getStrategicGames();
     }, []);
-
 
     return (
         <div>
-            <div class="tactical-game-list-actions">
+            <div class="strategic-game-list-actions">
                 <Stack spacing={2} direction="row" sx={{
                     justifyContent: "flex-end",
                     alignItems: "flex-start",
@@ -58,10 +56,10 @@ const StrategicGameList = () => {
                     <Button variant="outlined" onClick={createNewGame}>New</Button>
                 </Stack>
             </div>
-            <div class="tactical-game-list">
-                <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                    {games.map((item) => (
-                        <StrategicGameListItem key={item.id} game={item} />
+            <div class="strategic-game-list">
+                <List>
+                    {strategicGames.map((item) => (
+                        <StrategicGameListItem key={item.id} strategicGame={item} />
                     ))}
                 </List>
             </div>

@@ -31,26 +31,32 @@ a {
   }
 }
 
-.tactical-game-list {
+.strategic-game-list {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
 }
 
-.tactical-game-view {
+.strategic-game-view {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
 }
 
-.tactical-game-view-actions {
+.strategic-game-edit {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.strategic-game-view-actions {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 10px;
 }
 
-.tactical-game-list-actions {
+.strategic-game-list-actions {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
