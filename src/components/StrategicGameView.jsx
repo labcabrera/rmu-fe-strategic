@@ -26,6 +26,12 @@ const StrategicGameView = () => {
                     disabled
                     size="small" />
                 <TextField
+                    label="Realm"
+                    name="realm"
+                    value={strategicGame.realm}
+                    disabled
+                    size="small" />
+                <TextField
                     label="Description"
                     name="description"
                     value={strategicGame.description}

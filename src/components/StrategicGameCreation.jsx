@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
 import Autocomplete from '@mui/material/Autocomplete';
-import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { API_CORE_URL, API_STRATEGIC_URL } from "../constants/environment";
 
 const StrategicGameCreation = () => {
 
-    const debugMode = true;
+    const debugMode = false;
 
     const navigate = useNavigate();
 
@@ -77,8 +79,18 @@ const StrategicGameCreation = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div class="strategic-game-creation">
+            <div class="strategic-game-view-actions">
+                <Stack spacing={2} direction="row" sx={{
+                    justifyContent: "flex-end",
+                    alignItems: "flex-start",
+                }}>
+                    <IconButton variant="outlined" onClick={handleSubmit}>
+                        <SaveIcon />
+                    </IconButton>
+                </Stack>
+            </div>
+            <Box>
                 <TextField
                     label="Name"
                     variant="outlined"
@@ -102,11 +114,10 @@ const StrategicGameCreation = () => {
                     value={formData.description}
                     onChange={handleChange}
                     fullWidth
+                    multiline
+                    maxRows={4}
                     margin="normal" />
-                <Button type="submit" variant="outlined" color="primary">
-                    Create
-                </Button>
-            </form>
+            </Box>
             <Snackbar
                 open={displayError}
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}

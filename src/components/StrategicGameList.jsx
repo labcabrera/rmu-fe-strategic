@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import Snackbar from '@mui/material/Snackbar';
@@ -53,7 +53,9 @@ const StrategicGameList = () => {
                     justifyContent: "flex-end",
                     alignItems: "flex-start",
                 }}>
-                    <Button variant="outlined" onClick={createNewGame}>New</Button>
+                    <IconButton variant="outlined" onClick={createNewGame}>
+                        <AddIcon />
+                    </IconButton>
                 </Stack>
             </div>
             <div class="strategic-game-list">
