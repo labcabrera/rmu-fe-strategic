@@ -83,13 +83,7 @@ export default function CharacterEquipmentPanel({
 
   return (
     <>
-      <Box
-        sx={{
-          mt: 2,
-          color: 'text.primary',
-          bgcolor: 'background.default',
-        }}
-      >
+      <Box sx={{ mt: 2 }}>
         <Box
           sx={{
             display: 'grid',

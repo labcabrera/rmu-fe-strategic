@@ -1,9 +1,11 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SquareIcon from '@mui/icons-material/Square';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -12,6 +14,7 @@ import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import {
   Box,
   ButtonGroup,
+  Collapse,
   IconButton,
   Paper,
   Stack,
@@ -28,7 +31,6 @@ import {
   CharacterSkill,
   DeleteButton,
   deleteCharacterSkill,
-  deleteSkill,
   levelDownSkill,
   levelUpSkill,
   Profession,
@@ -57,68 +59,46 @@ export default function CharacterSkillTable({
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell align="left">{t('Skill')}</TableCell>
-            <TableCell align="left">
+            <TableCell align="left" sx={{ width: 44 }} />
+            <TableCell align="left" sx={{ minWidth: 180 }}>
+              {t('Skill')}
+            </TableCell>
+            <TableCell align="left" sx={{ minWidth: 120 }}>
               <Tooltip title={t('Specializacion')}>
                 <Typography variant="body2">
                   <b>Spec</b>
                 </Typography>
               </Tooltip>
             </TableCell>
-            <TableCell align="left">Stats</TableCell>
+            <TableCell align="left" sx={{ minWidth: 90 }}>
+              Stats
+            </TableCell>
 
-            <TableCell align="right">
+            <TableCell align="right" sx={{ width: 64 }}>
               <Tooltip title={t('Developed ranks')}>
                 <Typography variant="body2">
                   <b>{t('Ranks')}</b>
                 </Typography>
               </Tooltip>
             </TableCell>
-            <TableCell align="right">
-              <Tooltip title={t('Rank bonus')}>
-                <Typography variant="body2">
-                  <b>Rank</b>
-                </Typography>
-              </Tooltip>
+            <TableCell align="right" sx={{ width: 72 }}>
+              Total
             </TableCell>
-            <TableCell align="right">
-              <Tooltip title={t('Stat bonus')}>
-                <Typography variant="body2">
-                  <b>Stat</b>
-                </Typography>
-              </Tooltip>
-            </TableCell>
-            <TableCell align="right">
-              <Tooltip title={t('Racial bonus')}>
-                <Typography variant="body2">
-                  <b>Racial</b>
-                </Typography>
-              </Tooltip>
-            </TableCell>
-            <TableCell align="right">
-              <Tooltip title={t('Profession bonus')}>
-                <Typography variant="body2">
-                  <b>Proffesion</b>
-                </Typography>
-              </Tooltip>
-            </TableCell>
-            <TableCell align="right">Custom</TableCell>
-            <TableCell align="right">Total</TableCell>
-            <TableCell align="right">
-              <Tooltip title={t('Development cost')}>
-                <Typography variant="body2">
-                  <b>Dev</b>
-                </Typography>
-              </Tooltip>
-            </TableCell>
-            <TableCell align="left">
+            <TableCell align="left" sx={{ minWidth: 88 }}>
               <Tooltip title={t('Developed ranks')}>
                 <Typography variant="body2">
                   <b>{t('Dev Ranks')}</b>
                 </Typography>
               </Tooltip>
             </TableCell>
-            <TableCell align="left">
+            <TableCell align="right" sx={{ minWidth: 72 }}>
+              <Tooltip title={t('Development cost')}>
+                <Typography variant="body2">
+                  <b>Dev</b>
+                </Typography>
+              </Tooltip>
+            </TableCell>
+            <TableCell align="left" sx={{ minWidth: 220 }}>
               <Tooltip title={t('Development points available / total')}>
                 <Typography variant="subtitle2">
                   DP: {character.experience.availableDevPoints} / {character.experience.devPoints}
@@ -129,7 +109,7 @@ export default function CharacterSkillTable({
         </TableHead>
         <TableBody>
           {character?.skills.map((item, index) => (
-            <CharacterViewSkillsEntry
+            <SkillRow
               key={index}
               skill={item}
               character={character}
@@ -145,7 +125,7 @@ export default function CharacterSkillTable({
   );
 }
 
-function CharacterViewSkillsEntry({
+function SkillRow({
   character,
   setCharacter,
   skill,
@@ -163,6 +143,7 @@ function CharacterViewSkillsEntry({
   const auth = useAuth();
   const { t } = useTranslation();
   const { showError } = useError();
+  const [open, setOpen] = useState(false);
   const isProfessional = skill.professional?.includes('professional');
   const isKnack = skill.professional?.includes('knack');
 
@@ -241,114 +222,127 @@ function CharacterViewSkillsEntry({
   };
 
   const isAvailableProfessionSkill = (skillObj: CharacterSkill) => {
-    return profession && profession.professionalSkills.includes(skillObj.skillId);
+    return !!profession && (profession.professionalSkills as string[]).includes(skillObj.skillId);
   };
 
   const getStatistics = (skill: CharacterSkill) => {
     return skill.statistics && skill.statistics.length > 0 ? skill.statistics.join('/').toLowerCase() : '-';
   };
 
-  return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-      <TableCell component="th" scope="row">
-        {t(skill.skillId)}
-      </TableCell>
-      <TableCell component="th" scope="row">
-        {skill.specialization ? t(skill.specialization) : '-'}
-      </TableCell>
-      <TableCell align="left">{getStatistics(skill)}</TableCell>
+  const detailItems = [
+    { label: t('Rank'), value: skill.developmentBonus, color: getColor(skill.developmentBonus) },
+    { label: t('Stat'), value: skill.statBonus, color: getColor(skill.statBonus) },
+    { label: t('Racial'), value: skill.racialBonus, color: getColor(skill.racialBonus) },
+    { label: t('Proffesion'), value: skill.professionalBonus, color: getColor(skill.professionalBonus) },
+    {
+      label: t('Custom'),
+      value: skill.customBonus,
+      color: skill.customBonus === 0 ? 'text.primary' : skill.customBonus > 0 ? 'success.main' : 'error.main',
+    },
+    {
+      label: t('Dev Ranks'),
+      value: '',
+      color: 'text.primary',
+    },
+  ];
 
-      <TableCell align="right">
-        <Typography variant="body2">
-          <b>{skill.ranks}</b>
-        </Typography>
-      </TableCell>
-      <TableCell
-        align="right"
-        sx={{
-          color: getColor(skill.developmentBonus),
-        }}
-      >
-        {skill.developmentBonus}
-      </TableCell>
-      <TableCell
-        align="right"
-        sx={{
-          color: getColor(skill.statBonus),
-        }}
-      >
-        {skill.statBonus}
-      </TableCell>
-      <TableCell align="right" sx={{ color: getColor(skill.racialBonus) }}>
-        {skill.racialBonus}
-      </TableCell>
-      <TableCell align="right" sx={{ color: getColor(skill.professionalBonus) }}>
-        {skill.professionalBonus}
-      </TableCell>
-      <TableCell
-        align="right"
-        sx={{ color: skill.customBonus === 0 ? undefined : skill.customBonus > 0 ? 'success.main' : 'error.main' }}
-      >
-        {skill.customBonus}
-      </TableCell>
-      <TableCell
-        align="right"
-        sx={{
-          color: getColor(skill.totalBonus),
-          fontWeight: 'bold',
-        }}
-      >
-        {skill.totalBonus}
-      </TableCell>
-      <TableCell align="right">{skill.development?.join(' / ') || '-'}</TableCell>
-      <TableCell align="right">
-        <Stack direction="row" spacing={0}>
-          {Array.from({ length: 3 }, (_, idx) => idx + 1).map((rank) => (
-            <Box key={rank} component="span" sx={{ display: 'inline-flex', mx: 0, p: 0 }}>
-              {rank <= skill.ranksDeveloped ? (
-                <SquareIcon sx={{ mx: 0, p: 0 }} fontSize="small" />
-              ) : (
-                <CropSquareIcon sx={{ mx: 0, p: 0 }} fontSize="small" />
-              )}
-            </Box>
-          ))}
-        </Stack>
-      </TableCell>
-      <TableCell align="left">
-        <ButtonGroup>
-          <IconButton onClick={handleLevelUp} disabled={isLevelUpDisabled()} color="primary">
-            <ArrowCircleUpIcon />
+  return (
+    <Fragment>
+      <TableRow>
+        <TableCell align="left" sx={{ width: 44, px: 0.5 }}>
+          <IconButton aria-label="toggle-skill-details" onClick={() => setOpen((current) => !current)} size="small">
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
-          <IconButton onClick={handleLevelDown} disabled={isLevelDownDisabled()} color="primary">
-            <ArrowCircleDownIcon />
-          </IconButton>
-          <DeleteButton onClick={() => handleDeleteSkill(skill)} disabled={isDeletedDisabled()} />
-          {isAvailableProfessionSkill(skill) && (
-            <>
-              <Tooltip title={t('Professional skill')}>
-                <IconButton
-                  aria-label="set-professional"
-                  onClick={() => handleSetUpProfessionalSkill(skill)}
-                  disabled={!isProfessional && currentProfessionalSkills >= maxProfessionalSkills}
-                  color="primary"
-                >
-                  {isProfessional ? <TurnedInIcon /> : <TurnedInNotIcon />}
-                </IconButton>
-              </Tooltip>
-              <Tooltip title={t('Knack skill')}>
-                <IconButton
-                  aria-label="set-knack"
-                  onClick={() => handleSetUpKnackSkill(skill)}
-                  color="primary"
-                  disabled={!isKnack && currentKnackSkills >= maxKnackSkills}
-                >
-                  {isKnack ? <StarIcon /> : <StarBorderIcon />}
-                </IconButton>
-              </Tooltip>
-            </>
-          )}
-        </ButtonGroup>
-      </TableCell>
-    </TableRow>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {t(skill.skillId)}
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {skill.specialization ? t(skill.specialization) : '-'}
+        </TableCell>
+        <TableCell align="left">{getStatistics(skill)}</TableCell>
+        <TableCell align="right">
+          <Typography variant="body2">
+            <b>{skill.ranks}</b>
+          </Typography>
+        </TableCell>
+        <TableCell
+          align="right"
+          sx={{
+            color: getColor(skill.totalBonus),
+            fontWeight: 'bold',
+          }}
+        >
+          {skill.totalBonus}
+        </TableCell>
+        <TableCell align="left">
+          <Stack direction="row" spacing={0}>
+            {Array.from({ length: 3 }, (_, idx) => idx + 1).map((rank) => (
+              <Box key={rank} component="span" sx={{ display: 'inline-flex', mx: 0, p: 0 }}>
+                {rank <= skill.ranksDeveloped ? (
+                  <SquareIcon sx={{ mx: 0, p: 0 }} fontSize="small" />
+                ) : (
+                  <CropSquareIcon sx={{ mx: 0, p: 0 }} fontSize="small" />
+                )}
+              </Box>
+            ))}
+          </Stack>
+        </TableCell>
+        <TableCell align="right">{skill.development?.join(' / ') || '-'}</TableCell>
+        <TableCell align="left">
+          <ButtonGroup>
+            <IconButton onClick={handleLevelUp} disabled={isLevelUpDisabled()} color="primary">
+              <ArrowCircleUpIcon />
+            </IconButton>
+            <IconButton onClick={handleLevelDown} disabled={isLevelDownDisabled()} color="primary">
+              <ArrowCircleDownIcon />
+            </IconButton>
+            <DeleteButton onClick={() => handleDeleteSkill(skill)} disabled={isDeletedDisabled()} />
+            {isAvailableProfessionSkill(skill) && (
+              <>
+                <Tooltip title={t('Professional skill')}>
+                  <IconButton
+                    aria-label="set-professional"
+                    onClick={() => handleSetUpProfessionalSkill(skill)}
+                    disabled={!isProfessional && currentProfessionalSkills >= maxProfessionalSkills}
+                    color="primary"
+                  >
+                    {isProfessional ? <TurnedInIcon /> : <TurnedInNotIcon />}
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={t('Knack skill')}>
+                  <IconButton
+                    aria-label="set-knack"
+                    onClick={() => handleSetUpKnackSkill(skill)}
+                    color="primary"
+                    disabled={!isKnack && currentKnackSkills >= maxKnackSkills}
+                  >
+                    {isKnack ? <StarIcon /> : <StarBorderIcon />}
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
+          </ButtonGroup>
+        </TableCell>
+      </TableRow>
+      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <TableCell colSpan={9} sx={{ py: 0, borderBottom: 0 }}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Stack spacing={1} sx={{ py: 1.5 }}>
+              {detailItems
+                .filter((item) => item.label !== t('Dev Ranks'))
+                .map((item) => (
+                  <Stack key={item.label} direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
+                    <Typography variant="body2" color="text.secondary">
+                      {item.label}
+                    </Typography>
+                    <Box sx={{ color: item.color, fontWeight: 500 }}>{item.value}</Box>
+                  </Stack>
+                ))}
+            </Stack>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </Fragment>
   );
 }

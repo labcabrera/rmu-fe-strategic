@@ -37,7 +37,7 @@ const categories = [
   { id: 'food', label: 'Consumibles', icon: <Inventory2Icon /> },
 ] as const;
 const armorSubcategories = ['head', 'body', 'arms', 'legs'];
-const armorTypes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+const armorTypes = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
 const weaponSubcategories = [
   'melee-weapon@blade',
   'melee-weapon@greater-blade',
@@ -78,7 +78,7 @@ export function ItemSelector({
     if (category === 'armor' && armorType) {
       rsql += `;armor.at==${armorType}`;
     }
-    fetchItems(rsql, 0, 100, auth)
+    fetchItems(rsql, 0, 250, auth)
       .then((response) => setItems(response.content))
       .catch((err) => showError(err.menssage));
   };
@@ -94,9 +94,9 @@ export function ItemSelector({
   useEffect(() => {
     if (!item) return;
     setFormData({
-      name: t(item.id),
+      name: t(item.name, item.name),
       itemTypeId: item.id,
-      cost: item.info.cost.average,
+      cost: item.info.cost?.average || 0,
       fumble: item.weapon?.fumble,
       weight: item.info.weight || undefined,
       strength: item.info.strength || undefined,
@@ -225,8 +225,8 @@ export function ItemSelector({
                     <Box sx={{ position: 'relative' }}>
                       <CardMedia
                         component="img"
-                        image={`${imageBaseUrl}images/items/${e.id}.png`}
-                        alt={e.id}
+                        image={e.imageUrl || `${imageBaseUrl}images/items/${e.id}.png`}
+                        alt={e.name}
                         sx={{
                           aspectRatio: '1 / 1',
                           objectFit: 'cover',
@@ -251,11 +251,11 @@ export function ItemSelector({
 
                     <CardContent sx={{ p: 1.5 }}>
                       <Typography variant="subtitle2" noWrap>
-                        {e.id}
+                        {t(e.name, e.name)}
                       </Typography>
 
                       <Stack direction="row" spacing={2} sx={{ mt: 1 }}>
-                        <Typography variant="caption">🪙 {e.info.cost.average}</Typography>
+                        <Typography variant="caption">🪙 {e.info.cost?.average || 0}</Typography>
                         <Typography variant="caption">⚖ {e.info.weight}</Typography>
                       </Stack>
                     </CardContent>
@@ -340,8 +340,8 @@ function ItemResume({ item }: { item: Item }) {
       <Stack direction="row" spacing={2}>
         <Box
           component="img"
-          src={`${imageBaseUrl}images/items/${item?.id}.png`}
-          alt={item?.id}
+          src={item.imageUrl || `${imageBaseUrl}images/items/${item.id}.png`}
+          alt={item.name}
           sx={{
             width: 96,
             height: 96,
@@ -353,7 +353,7 @@ function ItemResume({ item }: { item: Item }) {
           }}
         />
         <Box>
-          <Typography variant="h6">{item?.id}</Typography>
+          <Typography variant="h6">{t(item.name, item.name)}</Typography>
           <Typography variant="body2" color="text.secondary">
             {t(item.category)}
           </Typography>
@@ -365,7 +365,7 @@ function ItemResume({ item }: { item: Item }) {
       </Typography>
       <Divider />
       <Stack direction="row" spacing={4}>
-        <Typography>🪙 {item?.info.cost.average}</Typography>
+        <Typography>🪙 {item?.info.cost?.average || 0}</Typography>
         <Typography>⚖ {item?.info.weight}</Typography>
       </Stack>
       <Divider />
@@ -407,9 +407,9 @@ function ItemResume({ item }: { item: Item }) {
         )}
         <StatRow label={t('weight')} value={item.info.weight || '-'} />
         <StatRow label={t('length')} value={item.info.length || '-'} />
-        <StatRow label="Min cost" value={item.info.cost.min} />
-        <StatRow label="Avg cost" value={item.info.cost.average} />
-        <StatRow label="Max cost" value={item.info.cost.max} />
+        <StatRow label="Min cost" value={item.info.cost?.min || 0} />
+        <StatRow label="Avg cost" value={item.info.cost?.average || 0} />
+        <StatRow label="Max cost" value={item.info.cost?.max || 0} />
         <StatRow label="Production hours" value={item.info.productionHours || '-'} />
       </Box>
     </Stack>
@@ -474,7 +474,7 @@ function AddItemForm({
           <NumericInput
             label={t('cost')}
             value={formData.cost}
-            onChange={(e) => setFormData({ ...formData, cost: e || item.info.cost.average || 0 })}
+            onChange={(e) => setFormData({ ...formData, cost: e || item.info.cost?.average || 0 })}
           />
         </Grid>
         <Grid size={12}>
