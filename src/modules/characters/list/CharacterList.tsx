@@ -39,7 +39,11 @@ export default function CharacterList() {
 
   return (
     <LayoutBase
-      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('characters') }]}
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('characters') },
+      ]}
       actions={[<RefreshButton onClick={() => bindCharacters()} />]}
     >
       <CharacterListSearch setRsql={setRsql} />

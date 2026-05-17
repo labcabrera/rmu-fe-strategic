@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
-import { Box, CircularProgress, Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import {
   AddButton,
   fetchStrategicGames,

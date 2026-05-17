@@ -37,7 +37,7 @@ const TradeView: FC = () => {
 
   return (
     <>
-      <TradeViewActions character={character} setCharacter={setCharacter} />
+      <TradeViewActions />
 
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>Resume</Grid>

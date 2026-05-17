@@ -73,10 +73,10 @@ export default function FactionCreate() {
   return (
     <LayoutBase
       breadcrumbs={[
-        { name: t('home'), link: '/home' },
-        { name: t('strategic-games'), link: '/strategic/games' },
-        { name: t('strategic-game'), link: `/strategic/games/view/${strategicGame.id}` },
-        { name: t('create-faction') },
+        { name: t('home'), link: '/' },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('factions'), link: '/strategic/factions' },
+        { name: t('create') },
       ]}
       actions={[
         <CancelButton onClick={() => navigate(`/strategic/games/view/${strategicGame.id}`)} />,

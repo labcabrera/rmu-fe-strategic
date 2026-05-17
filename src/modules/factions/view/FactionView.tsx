@@ -104,9 +104,9 @@ export default function FactionView() {
     <LayoutBase
       breadcrumbs={[
         { name: t('home'), link: '/' },
-        { name: t('strategic-games'), link: `/strategic/games` },
-        { name: t('strategic-game'), link: `/strategic/games/view/${game?.id}` },
-        { name: t('faction') },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('factions'), link: '/strategic/factions' },
+        { name: t('view') },
       ]}
       actions={[
         <RefreshButton onClick={() => bindFaction(faction!.id)} />,

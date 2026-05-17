@@ -133,10 +133,9 @@ export default function CharacterView() {
     <LayoutBase
       breadcrumbs={[
         { name: t('home'), link: '/' },
-        { name: t('strategic-games'), link: '/strategic/games' },
-        { name: t('strategic-game'), link: `/strategic/games/view${strategicGame?.id}` },
-        { name: t('faction'), link: `/strategic/factions/view/${character?.faction.id}` },
-        { name: t('character') },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('characters'), link: '/strategic/characters' },
+        { name: t('view') },
       ]}
       actions={getActions()}
       leftPanel={

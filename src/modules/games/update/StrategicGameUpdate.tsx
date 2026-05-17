@@ -70,7 +70,8 @@ const StrategicGameUpdate: FC = () => {
     <LayoutBase
       breadcrumbs={[
         { name: t('home'), link: '/' },
-        { name: t('strategic-game'), link: `/strategic/games/view/${strategicGame.id}` },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('strategic-games'), link: '/strategic/games' },
         { name: t('edit') },
       ]}
       actions={[<CancelButton onClick={() => onCancel()} />, <SaveButton onClick={() => onUpdate()} />]}

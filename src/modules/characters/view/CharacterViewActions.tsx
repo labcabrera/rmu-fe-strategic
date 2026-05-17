@@ -10,7 +10,6 @@ import {
   DownloadButton,
   DeleteButton,
   DeleteDialog,
-  StrategicGame,
   Character,
   fetchCharacter,
   deleteCharacter,
@@ -22,8 +21,7 @@ import { useError } from '../../../ErrorContext';
 const CharacterViewActions: FC<{
   character: Character;
   setCharacter: Dispatch<SetStateAction<Character | undefined>>;
-  game: StrategicGame;
-}> = ({ character, setCharacter, game }) => {
+}> = ({ character, setCharacter }) => {
   const auth = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -32,9 +30,10 @@ const CharacterViewActions: FC<{
   const [levelUpDialogOpen, setLevelUpDialogOpen] = useState(false);
   const levelUpAvailable = character.experience.level < character.experience.availableLevel;
   const breadcrumbs = [
-    { name: t('strategic'), link: '/strategic' },
-    { name: t('faction'), link: `/strategic/factions/view/${character.faction.id}` },
-    { name: t('character') },
+    { name: t('home'), link: '/' },
+    { name: t('strategic-module'), link: '/strategic' },
+    { name: t('characters'), link: '/strategic/characters' },
+    { name: t('view') },
   ];
 
   const onRefresh = () => {

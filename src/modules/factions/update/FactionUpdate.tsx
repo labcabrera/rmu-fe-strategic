@@ -8,7 +8,6 @@ import {
   Faction,
   LayoutBase,
   SaveButton,
-  StrategicGame,
   updateFaction,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
@@ -23,7 +22,6 @@ export default function FactionUpdate() {
   const { showError } = useError();
 
   const faction = location.state?.faction as Faction;
-  const strategicGame = location.state?.strategicGame as StrategicGame;
   const [formData, setFormData] = useState<Faction>({
     name: faction?.name || '',
     management: {
@@ -53,9 +51,8 @@ export default function FactionUpdate() {
     <LayoutBase
       breadcrumbs={[
         { name: t('home'), link: '/' },
-        { name: t('strategic-games'), link: '/strategic/games' },
-        { name: t('strategic-game'), link: `/strategic/games/view/${strategicGame.id}` },
-        { name: t('faction'), link: `/strategic/factions/view/${faction.id}` },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('factions'), link: '/strategic/factions' },
         { name: t('edit') },
       ]}
       actions={[<CancelButton onClick={onCancel} />, <SaveButton onClick={onUpdate} />]}

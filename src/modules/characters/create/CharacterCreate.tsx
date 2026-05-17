@@ -264,10 +264,9 @@ export default function CharacterCreate() {
     <LayoutBase
       breadcrumbs={[
         { name: t('home'), link: '/' },
-        { name: t('strategic-games'), link: '/strategic/games' },
-        { name: t('strategic-games'), link: `/strategic/games/view/${game.id}` },
-        { name: t('faction'), link: `/strategic/factions/view/${faction?.id}` },
-        { name: t('create-character') },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('characters'), link: '/strategic/characters' },
+        { name: t('create') },
       ]}
       actions={[
         <CancelButton onClick={() => navigate(`/strategic/factions/view/${faction?.id}`)} />,

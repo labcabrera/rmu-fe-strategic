@@ -38,7 +38,11 @@ export default function FactionList() {
 
   return (
     <LayoutBase
-      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('factions') }]}
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('factions') },
+      ]}
       actions={[<RefreshButton onClick={() => bindFactions()} />]}
     >
       <FactionListSearch setRsql={setRsql} />

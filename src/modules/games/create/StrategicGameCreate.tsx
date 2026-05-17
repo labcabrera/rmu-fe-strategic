@@ -75,6 +75,7 @@ const StrategicGameCreate: FC = () => {
     <LayoutBase
       breadcrumbs={[
         { name: t('home'), link: '/' },
+        { name: t('strategic-module'), link: '/strategic' },
         { name: t('strategic-games'), link: '/strategic/games' },
         { name: t('create') },
       ]}
