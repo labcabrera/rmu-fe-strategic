@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress, Grid } from '@mui/material';
+import { Box, CircularProgress, Grid } from '@mui/material';
 import {
   AddButton,
   fetchStrategicGames,
@@ -39,18 +39,22 @@ export default function StrategicGameList() {
 
   return (
     <LayoutBase
-      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('strategic-games') }]}
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('strategic-module'), link: '/strategic' },
+        { name: t('strategic-games') },
+      ]}
       actions={[
         <RefreshButton onClick={() => bindStrategicGames()} />,
         <AddButton onClick={() => navigate('/strategic/games/create')} />,
       ]}
     >
       <StrategicGameListSearch setRsql={setRsql} />
-      <Grid container spacing={1}>
-        {pageData === undefined ? (
-          <CircularProgress />
-        ) : (
-          <>
+      {pageData === undefined ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Grid container spacing={1}>
             {pageData.content.map((game, index) => (
               <Grid key={index} size={gridSizeCard} sx={{ mt: 2 }}>
                 <RmuTextCard
@@ -61,17 +65,17 @@ export default function StrategicGameList() {
                 />
               </Grid>
             ))}
-            {pageData.content.length === 0 && <>No games found.</>}
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={pageData.pagination.totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
-          </>
-        )}
-      </Grid>
+          </Grid>
+          {pageData.content.length === 0 && <>No games found.</>}
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={pageData.pagination.totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
+        </>
+      )}
     </LayoutBase>
   );
 }

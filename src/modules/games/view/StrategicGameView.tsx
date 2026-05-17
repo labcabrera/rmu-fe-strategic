@@ -81,6 +81,7 @@ export default function StrategicGameView() {
     <LayoutBase
       breadcrumbs={[
         { name: t('home'), link: '/' },
+        { name: t('strategic'), link: '/strategic' },
         { name: t('strategic-games'), link: '/strategic/games' },
         { name: t('view') },
       ]}

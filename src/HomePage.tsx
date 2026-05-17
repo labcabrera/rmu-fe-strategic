@@ -14,6 +14,12 @@ const OPTIONS = [
     to: '/strategic/games',
   },
   {
+    value: 'factions',
+    subtitle: 'manage-factions',
+    image: `${imageBaseUrl}images/generic/faction.png`,
+    to: '/strategic/factions',
+  },
+  {
     value: 'characters',
     subtitle: 'manage-characters',
     image: `${imageBaseUrl}images/generic/races.png`,

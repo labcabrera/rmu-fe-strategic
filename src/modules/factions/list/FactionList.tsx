@@ -4,57 +4,56 @@ import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Grid } from '@mui/material';
 import {
-  Character,
-  fetchCharacters,
+  Faction,
+  fetchFactions,
   LayoutBase,
   Page,
-  RmuPagination,
   RefreshButton,
+  RmuPagination,
   RmuTextCard,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeCard } from '../../services/display';
-import CharacterListSearch from './CharacterListSearch';
+import FactionListSearch from './FactionListSearch';
 
-export default function CharacterList() {
+export default function FactionList() {
   const auth = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
-
-  const [rsql, setRsql] = useState('');
+  const [pageData, setPageData] = useState<Page<Faction>>();
+  const [rsql, setRsql] = useState<string>('');
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(24);
-  const [pageData, setPageData] = useState<Page<Character>>();
 
-  const bindCharacters = () => {
-    fetchCharacters(rsql, page, pageSize, auth)
-      .then((data) => setPageData(data))
+  const bindFactions = () => {
+    fetchFactions(rsql, page, pageSize, auth)
+      .then((response) => setPageData(response))
       .catch((err) => showError(err.message));
   };
 
   useEffect(() => {
-    bindCharacters();
+    bindFactions();
   }, [rsql, page, pageSize]);
 
   return (
     <LayoutBase
-      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('characters') }]}
-      actions={[<RefreshButton onClick={() => bindCharacters()} />]}
+      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('factions') }]}
+      actions={[<RefreshButton onClick={() => bindFactions()} />]}
     >
-      <CharacterListSearch setRsql={setRsql} />
+      <FactionListSearch setRsql={setRsql} />
       <Grid container spacing={1}>
         {pageData === undefined ? (
           <CircularProgress />
         ) : (
           <>
-            {pageData.content.map((c, index) => (
+            {pageData.content.map((faction, index) => (
               <Grid key={index} size={gridSizeCard} sx={{ mt: 2 }}>
                 <RmuTextCard
-                  value={c.name}
-                  subtitle={c.info.race.name}
-                  image={c.imageUrl || ''}
-                  onClick={() => navigate(`/strategic/characters/view/${c.id}`, { state: c })}
+                  value={faction.name}
+                  subtitle={faction.shortDescription || 'No description provided'}
+                  image={faction.imageUrl || ''}
+                  onClick={() => navigate(`/strategic/factions/view/${faction.id}`, { state: { faction } })}
                 />
               </Grid>
             ))}
