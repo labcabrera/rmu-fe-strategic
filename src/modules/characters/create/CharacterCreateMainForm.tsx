@@ -104,7 +104,7 @@ const CharacterCreateMainForm: FC<{
         <SelectRealmType
           profession={profession}
           value={formData.info.realmType}
-          onChange={(e) => handleRealmTypeChange(e.target.value)}
+          onChange={handleRealmTypeChange}
         />
       </Grid>
       <Grid size={gridFormSize}>

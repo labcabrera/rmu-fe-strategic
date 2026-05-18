@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import MenuItem from '@mui/material/MenuItem';
+import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
 
@@ -10,7 +10,7 @@ const SelectRealmType: FC<{
   profession?: Profession;
   value: string | undefined;
   required?: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
 }> = ({ profession, value, onChange, required = true }) => {
   const { t } = useTranslation();
   const error = required && (!value || value.trim() === '');
@@ -25,24 +25,21 @@ const SelectRealmType: FC<{
   };
 
   const options = getOptions();
+  const selectedRealmType = options.find((option) => option === value) ?? null;
 
   return (
-    <TextField
-      select
-      label={t('Realm type')}
-      value={value || ''}
+    <Autocomplete
+      options={options}
+      getOptionLabel={(option) => t(option)}
+      value={selectedRealmType}
+      onChange={(_event, newValue) => onChange(newValue ?? '')}
+      isOptionEqualToValue={(option, val) => option === val}
+      disabled={options.length === 1}
+      noOptionsText={t('No options')}
       size="small"
       fullWidth
-      onChange={onChange}
-      disabled={options.length === 1}
-      error={error}
-    >
-      {options.map((c) => (
-        <MenuItem key={c} value={c}>
-          {t(c)}
-        </MenuItem>
-      ))}
-    </TextField>
+      renderInput={(params) => <TextField {...params} label={t('Realm type')} error={error} required={required} />}
+    />
   );
 };
 
