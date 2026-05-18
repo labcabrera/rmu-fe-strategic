@@ -34,7 +34,7 @@ const SelectRealmType: FC<{
       value={selectedRealmType}
       onChange={(_event, newValue) => onChange(newValue ?? '')}
       isOptionEqualToValue={(option, val) => option === val}
-      disabled={options.length === 1}
+      readOnly={options.length === 1}
       noOptionsText={t('No options')}
       size="small"
       fullWidth
