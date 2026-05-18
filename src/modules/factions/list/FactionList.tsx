@@ -46,11 +46,11 @@ export default function FactionList() {
       actions={[<RefreshButton onClick={() => bindFactions()} />]}
     >
       <FactionListSearch setRsql={setRsql} />
-      <Grid container spacing={1}>
-        {pageData === undefined ? (
-          <CircularProgress />
-        ) : (
-          <>
+      {pageData === undefined ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Grid container spacing={1}>
             {pageData.content.map((faction, index) => (
               <Grid key={index} size={gridSizeCard} sx={{ mt: 2 }}>
                 <RmuTextCard
@@ -61,17 +61,17 @@ export default function FactionList() {
                 />
               </Grid>
             ))}
-            {pageData.content.length === 0 && <>{t('no-data-found')}</>}
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={pageData.pagination.totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
-          </>
-        )}
-      </Grid>
+          </Grid>
+          {pageData.content.length === 0 && <>{t('no-data-found')}</>}
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={pageData.pagination.totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
+        </>
+      )}
     </LayoutBase>
   );
 }

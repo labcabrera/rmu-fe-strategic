@@ -47,11 +47,11 @@ export default function CharacterList() {
       actions={[<RefreshButton onClick={() => bindCharacters()} />]}
     >
       <CharacterListSearch setRsql={setRsql} />
-      <Grid container spacing={1}>
-        {pageData === undefined ? (
-          <CircularProgress />
-        ) : (
-          <>
+      {pageData === undefined ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Grid container spacing={1}>
             {pageData.content.map((c, index) => (
               <Grid key={index} size={gridSizeCard} sx={{ mt: 2 }}>
                 <RmuTextCard
@@ -62,17 +62,17 @@ export default function CharacterList() {
                 />
               </Grid>
             ))}
-            {pageData.content.length === 0 && <>{t('no-data-found')}</>}
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={pageData.pagination.totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
-          </>
-        )}
-      </Grid>
+          </Grid>
+          {pageData.content.length === 0 && <>{t('no-data-found')}</>}
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={pageData.pagination.totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
+        </>
+      )}
     </LayoutBase>
   );
 }
