@@ -17,6 +17,7 @@ import {
   fetchRace,
   fetchStrategicGame,
   LayoutBase,
+  LevelUpButton,
   levelUpCharacter,
   Profession,
   Race,
@@ -121,7 +122,9 @@ export default function CharacterView() {
 
   const getActions = () => {
     const buttons = [];
-    // {levelUpAvailable && <LevelUpButton onClick={() => onLevelUp(false)} color="success" />}
+    if (character && character.experience.availableLevel > character?.experience.level) {
+      buttons.push(<LevelUpButton onClick={() => onLevelUp(false)} color="success" />);
+    }
     buttons.push(<RefreshButton onClick={() => bindCharacter(character?.id || '')} />);
     buttons.push(<EditButton onClick={() => onEdit()} />);
     buttons.push(<DownloadButton onClick={onDownload} />);
