@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
@@ -12,12 +12,17 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../../ErrorContext';
 
-const AddSkillDialog: FC<{
+export default function AddSkillDialog({
+  open,
+  character,
+  setCharacter,
+  onClose,
+}: {
   open: boolean;
   character: Character;
   setCharacter: Dispatch<SetStateAction<Character | undefined>>;
   onClose: () => void;
-}> = ({ open, character, setCharacter, onClose }) => {
+}) {
   const auth = useAuth();
   const { t } = useTranslation();
   const { showError } = useError();
@@ -79,13 +84,11 @@ const AddSkillDialog: FC<{
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{t('cancel')}</Button>
+        <Button onClick={handleClose}>{t('close')}</Button>
         <Button onClick={onAddSkill} variant="contained" disabled={!validFormData}>
           {t('add')}
         </Button>
       </DialogActions>
     </Dialog>
   );
-};
-
-export default AddSkillDialog;
+}
