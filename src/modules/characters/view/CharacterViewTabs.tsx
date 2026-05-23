@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
 import { Character, StrategicGame, Profession, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CharacterViewAttacks from './CharacterViewAttacks';
+import CharacterHealingPanel from './healing/CharacterHealingPanel';
 import CharacterViewInfo from './CharacterViewInfo';
 import CharacterViewMovement from './CharacterViewMovement';
 import CharacterViewResistances from './CharacterViewResistances';
@@ -100,7 +101,7 @@ const CharacterViewTabs: FC<{
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={9}>
-        TODO: healing
+        <CharacterHealingPanel character={character} />
       </CustomTabPanel>
 
       <TechnicalInfo>
