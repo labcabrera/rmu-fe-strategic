@@ -16,7 +16,7 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { DEFAULT_REALM_IMAGE, getAvatarImages } from '../../services/image-service';
+import { DEFAULT_REALM_IMAGE } from '../../services/image-service';
 import StrategicGameForm from '../form/StrategicGameForm';
 
 const EMPTY_STRATEGIC_GAME = {
@@ -87,7 +87,6 @@ const StrategicGameCreate: FC = () => {
         <EditableAvatar
           imageUrl={formData.imageUrl || DEFAULT_REALM_IMAGE}
           onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
-          images={getAvatarImages()}
         />
       }
     >

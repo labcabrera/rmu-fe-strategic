@@ -24,7 +24,7 @@ const SelectRace: FC<{
       value={selectedRace}
       onChange={handleChange}
       fullWidth
-      renderInput={(params) => <TextField {...params} label={label} size="small" error={!value} />}
+      renderInput={(params) => <TextField {...params} label={label} error={!value} />}
     />
   );
 };

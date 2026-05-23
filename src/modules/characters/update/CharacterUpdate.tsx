@@ -7,19 +7,14 @@ import {
   CancelButton,
   Character,
   EditableAvatar,
-  Faction,
   fetchCharacter,
-  fetchFaction,
-  fetchStrategicGame,
   LayoutBase,
   SaveButton,
-  StrategicGame,
   TechnicalInfo,
   updateCharacter,
   UpdateCharacterDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { getAvatarImages } from '../../services/image-service';
 import CharacterUpdateAttributes from './CharacterUpdateAttributes';
 
 export default function CharacterUpdate() {
@@ -30,8 +25,6 @@ export default function CharacterUpdate() {
   const { showError } = useError();
   const { characterId } = useParams<{ characterId: string }>();
   const [character, setCharacter] = useState<Character | null>();
-  const [faction, setFaction] = useState<Faction>();
-  const [strategicGame, setStrategicGame] = useState<StrategicGame>();
   const [formData, setFormData] = useState<UpdateCharacterDto>();
 
   const onUpdate = () => {
@@ -50,12 +43,6 @@ export default function CharacterUpdate() {
 
   useEffect(() => {
     if (!character) return;
-    fetchStrategicGame(character.gameId, auth)
-      .then((game: StrategicGame) => setStrategicGame(game))
-      .catch((err) => showError(err.message));
-    fetchFaction(character.faction.id, auth)
-      .then((faction: Faction) => setFaction(faction))
-      .catch((err) => showError(err.message));
     setFormData({
       name: character?.name || '',
       description: character?.description || '',
@@ -80,8 +67,6 @@ export default function CharacterUpdate() {
     }
   }, [location.state, characterId, showError]);
 
-  // if (!character || !strategicGame || !faction || !formData) return <div>Loading...</div>;
-
   return (
     <LayoutBase
       breadcrumbs={[
@@ -92,12 +77,7 @@ export default function CharacterUpdate() {
       ]}
       actions={[<CancelButton onClick={onCancel} />, <SaveButton onClick={onUpdate} />]}
       leftPanel={
-        <EditableAvatar
-          imageUrl={character?.imageUrl || ''}
-          onImageChange={onImageChange}
-          images={getAvatarImages()}
-          variant="rounded"
-        />
+        <EditableAvatar imageUrl={character?.imageUrl || ''} onImageChange={onImageChange} variant="rounded" />
       }
     >
       {!formData ? (

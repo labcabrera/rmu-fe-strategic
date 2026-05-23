@@ -3,7 +3,6 @@ import { useAuth } from 'react-oidc-context';
 import { Typography } from '@mui/material';
 import { EditableAvatar, Faction, StrategicGame, updateFaction } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { getAvatarImages } from '../../services/image-service';
 
 export default function FactionViewResume({
   faction,
@@ -27,7 +26,7 @@ export default function FactionViewResume({
 
   return (
     <>
-      <EditableAvatar imageUrl={faction?.imageUrl || ''} onImageChange={onImageUpdated} images={getAvatarImages()} />
+      <EditableAvatar imageUrl={faction?.imageUrl || ''} onImageChange={onImageUpdated} />
       <Typography variant="h6" color="primary" sx={{ mt: 2 }}>
         {faction?.name}
       </Typography>

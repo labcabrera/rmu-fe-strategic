@@ -18,7 +18,6 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { getAvatarImages } from '../../services/image-service';
 
 const defaultCharacterImage = `${imageBaseUrl}images/npcs/unknown.png`;
 const grayscale = 0.7;
@@ -80,8 +79,7 @@ export default function CharacterViewResume({
         <EditableAvatar
           imageUrl={character.imageUrl || defaultCharacterImage}
           onImageChange={onImageUpdated}
-          images={getAvatarImages()}
-          variant="circular"
+          variant="rounded"
         />
 
         <Stack spacing={2}>

@@ -6,7 +6,6 @@ import { Link, Typography } from '@mui/material';
 import { EditableAvatar, RmuTextCard, StrategicGame, updateStrategicGame } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { getAvatarImages } from '../../services/image-service';
 
 const defaultGameImage = `${imageBaseUrl}images/generic/strategic.png`;
 
@@ -28,11 +27,7 @@ const StrategicGameViewResume: FC<{
 
   return (
     <>
-      <EditableAvatar
-        imageUrl={strategicGame?.imageUrl || defaultGameImage}
-        onImageChange={onImageUpdated}
-        images={getAvatarImages()}
-      />
+      <EditableAvatar imageUrl={strategicGame?.imageUrl || defaultGameImage} onImageChange={onImageUpdated} />
       <Typography variant="h6" color="primary" sx={{ mt: 2 }}>
         {strategicGame?.name || ''}
       </Typography>

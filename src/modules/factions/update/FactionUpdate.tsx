@@ -11,7 +11,6 @@ import {
   updateFaction,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { getAvatarImages } from '../../services/image-service';
 import FactionForm from '../form/FactionForm';
 
 export default function FactionUpdate() {
@@ -56,9 +55,7 @@ export default function FactionUpdate() {
         { name: t('edit') },
       ]}
       actions={[<CancelButton onClick={onCancel} />, <SaveButton onClick={onUpdate} />]}
-      leftPanel={
-        <EditableAvatar imageUrl={formData.imageUrl || ''} onImageChange={onImageUpdated} images={getAvatarImages()} />
-      }
+      leftPanel={<EditableAvatar imageUrl={formData.imageUrl || ''} onImageChange={onImageUpdated} />}
     >
       <FactionForm formData={formData} setFormData={setFormData} />
     </LayoutBase>

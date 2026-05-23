@@ -15,7 +15,6 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { getAvatarImages } from '../../services/image-service';
 import FactionForm from '../form/FactionForm';
 
 export const EMPTY_FACTION = {
@@ -86,7 +85,6 @@ export default function FactionCreate() {
         <EditableAvatar
           imageUrl={formData.imageUrl || `${imageBaseUrl}images/generic/faction.png`}
           onImageChange={(newImageUrl) => setFormData({ ...formData, imageUrl: newImageUrl })}
-          images={getAvatarImages()}
         />
       }
     >

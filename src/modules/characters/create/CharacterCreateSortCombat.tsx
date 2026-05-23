@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Box, Grid, IconButton, List, ListItem, ListItemText } from '@mui/material';
-import { CategorySeparator } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 export default function CharacterCreateSortCombat({
   items,
@@ -27,7 +26,6 @@ export default function CharacterCreateSortCombat({
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
-        <CategorySeparator text={t('weapon-development-order')} />
         <List>
           {order.map((item, i) => (
             <ListItem

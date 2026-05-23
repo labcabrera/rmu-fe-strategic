@@ -45,7 +45,6 @@ const NameTextField: FC<NameTextFieldProps> = ({
         onChange={(e) => onChange((e.target as HTMLInputElement).value)}
         fullWidth
         error={required && !value}
-        size="small"
         slotProps={{
           input: {
             endAdornment: (

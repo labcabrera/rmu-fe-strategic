@@ -7,13 +7,12 @@ const CharacterCreateProfessionalSkills: FC<{
   profession: Profession;
 }> = ({ profession }) => {
   const { t } = useTranslation();
-
   const skillsTranslated = profession.professionalSkills.map((skill) => t(skill)).sort();
 
   return (
     <Grid container spacing={1}>
       {skillsTranslated.map((skill, index) => (
-        <Chip key={index} label={skill} />
+        <Chip key={index} label={skill} color="primary" />
       ))}
     </Grid>
   );

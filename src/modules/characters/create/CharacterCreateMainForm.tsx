@@ -82,9 +82,6 @@ const CharacterCreateMainForm: FC<{
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
-        <CategorySeparator text={t('information')} />
-      </Grid>
-      <Grid size={12}>
         <NameTextField
           label={t('name')}
           value={formData.name}
@@ -101,11 +98,7 @@ const CharacterCreateMainForm: FC<{
         <SelectProfession value={formData.info.professionId} onChange={(e, p) => onProfessionChange(e, p!)} />
       </Grid>
       <Grid size={gridFormSize}>
-        <SelectRealmType
-          profession={profession}
-          value={formData.info.realmType}
-          onChange={handleRealmTypeChange}
-        />
+        <SelectRealmType profession={profession} value={formData.info.realmType} onChange={handleRealmTypeChange} />
       </Grid>
       <Grid size={gridFormSize}>
         <NumericInput

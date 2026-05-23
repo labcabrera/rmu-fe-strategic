@@ -33,9 +33,8 @@ const SelectProfession: React.FC<{
       onChange={(_event, newValue) => onChange(newValue?.id ?? '', newValue ?? undefined)}
       isOptionEqualToValue={(option, val) => option.id === val.id}
       fullWidth
-      size="small"
       renderInput={(params) => <TextField {...params} label={t('profession')} error={error} required={required} />}
-      noOptionsText={t('No options')}
+      noOptionsText={t('no-options')}
     />
   );
 };

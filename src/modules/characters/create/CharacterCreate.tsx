@@ -20,13 +20,13 @@ import {
   Race,
   RefreshButton,
   SaveButton,
+  Section,
   StrategicGame,
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { defaultStats } from '../../data/character-create';
 import { imageBaseUrl } from '../../services/config';
-import { getAvatarImages } from '../../services/image-service';
 import { randomizeStats } from '../../services/randomize-stats';
 import CharacterViewStatsChart from '../view/stats/CharacterViewStatsChart';
 import CharacterCreateBoostOptionsDialog from './CharacterCreateBoostOptionsDialog';
@@ -277,58 +277,75 @@ export default function CharacterCreate() {
           <EditableAvatar
             imageUrl={formData.imageUrl || defaultImage}
             onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
-            images={getAvatarImages()}
           />
           <Typography>{faction?.name}</Typography>
         </>
       }
     >
-      <CharacterCreateMainForm
-        formData={formData}
-        setFormData={setFormData}
-        setProfession={setProfession}
-        selectedRace={selectedRace}
-        races={races}
-        setSelectedRace={setSelectedRace}
-        profession={profession}
-      />
-
-      <CategorySeparator text={t('statistics')}>
-        <RefreshButton onClick={onRandomStats} />
-        <Badge badgeContent={2} color="success">
-          <IconButton onClick={() => setBoostDialogOpen(true)} color="primary">
-            <OutboundIcon />
-          </IconButton>
-        </Badge>
-      </CategorySeparator>
-
-      <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <CharacterCreateStats formData={formData} statBonusFormData={statBonusFormData} />
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', alignItems: 'stretch' }}>
-          <Box sx={{ flex: 1 }}>
-            <CharacterViewStatsChart stats={formData.statistics} minHeight={320} />
-          </Box>
-        </Grid>
-      </Grid>
-
-      <Grid size={12}>
-        <CharacterCreateSortCombat items={formData.weaponDevelopment || []} onChange={handleWeaponOrderChange} />
-      </Grid>
-
-      <CharacterCreateLore formData={formData} setFormData={setFormData} />
-
-      {profession && (
+      <Grid container spacing={2}>
         <Grid size={12}>
-          <>
-            <CategorySeparator text={t('skill-development-costs')} />
-            <CharacterCreateSkillCosts profession={profession} />
-            <CategorySeparator text={t('professional-skills')} />
-            <CharacterCreateProfessionalSkills profession={profession} />
-          </>
+          <Section title={t('character')}>
+            <CharacterCreateMainForm
+              formData={formData}
+              setFormData={setFormData}
+              setProfession={setProfession}
+              selectedRace={selectedRace}
+              races={races}
+              setSelectedRace={setSelectedRace}
+              profession={profession}
+            />
+          </Section>
         </Grid>
-      )}
+        <Grid size={12}>
+          <Section>
+            <CategorySeparator text={t('statistics')}>
+              <RefreshButton onClick={onRandomStats} />
+              <Badge badgeContent={2} color="success">
+                <IconButton onClick={() => setBoostDialogOpen(true)} color="primary">
+                  <OutboundIcon />
+                </IconButton>
+              </Badge>
+            </CategorySeparator>
+            <Grid container spacing={1}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <CharacterCreateStats formData={formData} statBonusFormData={statBonusFormData} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', alignItems: 'stretch' }}>
+                <Box sx={{ flex: 1 }}>
+                  <CharacterViewStatsChart stats={formData.statistics} minHeight={320} />
+                </Box>
+              </Grid>
+            </Grid>
+          </Section>
+        </Grid>
+        <Grid size={12}>
+          <Section title={t('weapon-development-order')}>
+            <CharacterCreateSortCombat items={formData.weaponDevelopment || []} onChange={handleWeaponOrderChange} />
+          </Section>
+        </Grid>
+        <Grid size={12}>
+          <Section title={t('lore')}>
+            <CharacterCreateLore formData={formData} setFormData={setFormData} />
+          </Section>
+        </Grid>
+        {profession && (
+          <>
+            <Grid size={12}>
+              <Section title={t('skill-development-costs')}>
+                <CharacterCreateSkillCosts profession={profession} />
+              </Section>
+            </Grid>
+            <Grid size={12}>
+              <Section title={t('professional-skills')}>
+                <CharacterCreateProfessionalSkills profession={profession} />
+              </Section>
+            </Grid>
+          </>
+        )}
+      </Grid>
+
+      {/* <Grid size={12}> */}
+      {/* </Grid> */}
 
       <CharacterCreateBoostOptionsDialog
         open={boostDialogOpen}
