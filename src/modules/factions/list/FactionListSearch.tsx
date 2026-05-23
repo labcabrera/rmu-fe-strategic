@@ -51,7 +51,6 @@ export default function FactionListSearch({ setRsql }: { setRsql: Dispatch<SetSt
           onChange={(_, newValue) => setFormData({ ...formData, gameId: newValue?.id || '' })}
           isOptionEqualToValue={(option, val) => option.id === val.id}
           fullWidth
-          size="small"
           renderInput={(params) => <TextField {...params} label={t('strategic-game')} />}
           noOptionsText={t('no-options')}
         />

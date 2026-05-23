@@ -48,7 +48,6 @@ export default function StrategicGameListSearch({ setRsql }: { setRsql: Dispatch
           onChange={(_, newValue) => setRealmId(newValue?.id || '')}
           isOptionEqualToValue={(option, val) => option.id === val.id}
           fullWidth
-          size="small"
           renderInput={(params) => <TextField {...params} label={t('realm')} />}
           noOptionsText={t('no-options')}
         />

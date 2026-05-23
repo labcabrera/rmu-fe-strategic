@@ -65,7 +65,6 @@ export default function CharacterListSearch({ setRsql }: { setRsql: Dispatch<Set
           onChange={(_, newValue) => setFormData({ ...formData, gameId: newValue?.id || '' })}
           isOptionEqualToValue={(option, val) => option.id === val.id}
           fullWidth
-          size="small"
           renderInput={(params) => <TextField {...params} label={t('strategic-game')} />}
           noOptionsText={t('no-options')}
         />
@@ -78,7 +77,6 @@ export default function CharacterListSearch({ setRsql }: { setRsql: Dispatch<Set
           onChange={(_, newValue) => setFormData({ ...formData, factionId: newValue?.id || '' })}
           isOptionEqualToValue={(option, val) => option.id === val.id}
           fullWidth
-          size="small"
           renderInput={(params) => <TextField {...params} label={t('faction')} />}
           noOptionsText={t('no-options')}
         />
