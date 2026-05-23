@@ -6,13 +6,13 @@ import CharacterViewAttacks from './CharacterViewAttacks';
 import CharacterViewInfo from './CharacterViewInfo';
 import CharacterViewMovement from './CharacterViewMovement';
 import CharacterViewResistances from './CharacterViewResistances';
-import CharacterViewExperience from './CharacterViewXp';
 import CharacterEquipmentButtons from './items/CharacterEquipmentButtons';
 import CharacterEquipmentPanel from './items/CharacterEquipmentPanel';
 import CharacterViewItems from './items/CharacterViewItems';
 import CharacterViewSkills from './skills/CharacterViewSkills';
 import CharacterViewStats from './stats/CharacterViewStats';
 import CharacterViewTraits from './traits/CharacterViewTraits';
+import CharacterViewExperience from './xp/CharacterViewXp';
 
 function CustomTabPanel(props: { children?: ReactNode; value: number; index: number }) {
   const { children, value, index, ...other } = props;
@@ -86,7 +86,6 @@ const CharacterViewTabs: FC<{
       <CustomTabPanel value={value} index={5}>
         <CharacterEquipmentButtons character={character} setCharacter={setCharacter} />
         <CharacterEquipmentPanel character={character} setCharacter={setCharacter} />
-        <CharacterViewItems character={character} setCharacter={setCharacter} />
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={6}>
@@ -98,7 +97,7 @@ const CharacterViewTabs: FC<{
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={8}>
-        <CharacterViewExperience character={character} setCharacter={setCharacter} />
+        <CharacterViewExperience character={character} strategicGame={strategicGame} setCharacter={setCharacter} />
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={9}>
