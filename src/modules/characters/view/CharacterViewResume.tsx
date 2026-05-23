@@ -166,6 +166,15 @@ export default function CharacterViewResume({
                   progress={hpPercent}
                   color={character.hp.current > 0 ? 'success' : 'error'}
                 />
+                {character.power && (
+                  <MetricProgress
+                    icon={<FavoriteBorderIcon />}
+                    label={t('power')}
+                    value={`${character.power.current} / ${character.power.max}`}
+                    progress={hpPercent}
+                    color={character.hp.current > 0 ? 'info' : 'error'}
+                  />
+                )}
               </Stack>
             </CardContent>
           </Card>
@@ -218,7 +227,7 @@ function MetricProgress({
   value: string;
   subValue?: string;
   progress: number;
-  color: 'primary' | 'success' | 'error';
+  color: 'primary' | 'success' | 'error' | 'info';
 }) {
   return (
     <Stack spacing={1}>
