@@ -22,6 +22,7 @@ import {
   RefreshButton,
   EditButton,
   DeleteButton,
+  Section,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeCard } from '../../services/display';
@@ -115,43 +116,58 @@ export default function FactionView() {
       ]}
       leftPanel={<FactionViewResume faction={faction} setFaction={setFaction} game={game} />}
     >
-      <CategorySeparator text={t('strategic-game')} />
       <Grid container spacing={1}>
-        <Grid size={gridSizeCard}>
-          <RmuTextCard
-            value={game?.name || ''}
-            subtitle={t('strategic-game')}
-            image={game?.imageUrl || ''}
-            onClick={() => navigate(`/strategic/games/view/${game?.id}`, { state: { strategicGame: game } })}
-          />
+        <Grid size={12}>
+          <Section title={t('strategic-game')} elevation={0}>
+            <Grid container spacing={1}>
+              <Grid size={3}>
+                <RmuTextCard
+                  value={game?.name || ''}
+                  subtitle={t('strategic-game')}
+                  image={game?.imageUrl || ''}
+                  onClick={() => navigate(`/strategic/games/view/${game?.id}`, { state: { strategicGame: game } })}
+                />
+              </Grid>
+            </Grid>
+          </Section>
+        </Grid>
+        <Grid size={12}>
+          <Section title={t('information')} elevation={0}>
+            <FactionViewAttributes faction={faction} characters={characters} />
+          </Section>
+        </Grid>
+        <Grid size={12}>
+          <Section
+            title={t('characters')}
+            elevation={0}
+            actions={
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                <AddButton onClick={onCharacterCreate} />
+                <ToggleButtonGroup
+                  value={displayCharacterTable ? 'table' : 'list'}
+                  exclusive
+                  size="small"
+                  onChange={handleViewModeChange}
+                  aria-label="view-mode"
+                >
+                  <ToggleButton value="list" aria-label="list">
+                    <ViewListIcon fontSize="small" />
+                  </ToggleButton>
+                  <ToggleButton value="table" aria-label="table">
+                    <TableRowsIcon fontSize="small" />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+            }
+          >
+            {displayCharacterTable ? (
+              <FactionViewCharactersTable characters={characters} />
+            ) : (
+              <FactionViewCharacters faction={faction} characters={characters} />
+            )}
+          </Section>
         </Grid>
       </Grid>
-      <CategorySeparator text={t('faction')} />
-      <FactionViewAttributes faction={faction} characters={characters} />
-      <CategorySeparator text={t('characters')}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-          <AddButton onClick={onCharacterCreate} />
-          <ToggleButtonGroup
-            value={displayCharacterTable ? 'table' : 'list'}
-            exclusive
-            size="small"
-            onChange={handleViewModeChange}
-            aria-label="view-mode"
-          >
-            <ToggleButton value="list" aria-label="list">
-              <ViewListIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton value="table" aria-label="table">
-              <TableRowsIcon fontSize="small" />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-      </CategorySeparator>
-      {displayCharacterTable ? (
-        <FactionViewCharactersTable characters={characters} />
-      ) : (
-        <FactionViewCharacters faction={faction} characters={characters} />
-      )}
       <DeleteDialog
         message={t('delete-confirmation')}
         onDelete={() => onDelete()}
