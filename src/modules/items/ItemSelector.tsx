@@ -129,7 +129,6 @@ export function ItemSelector({
   return (
     <Box
       sx={{
-        bgcolor: 'background.default',
         color: 'text.primary',
         height: '100%',
         width: '100%',
@@ -145,8 +144,6 @@ export function ItemSelector({
       {/* Sidebar */}
       <Box
         sx={{
-          borderRight: { md: 1 },
-          borderColor: '#040a22',
           p: 1,
           display: { xs: 'none', md: 'block' },
         }}
@@ -230,7 +227,6 @@ export function ItemSelector({
                         sx={{
                           aspectRatio: '1 / 1',
                           objectFit: 'cover',
-                          bgcolor: 'action.hover',
                           filter: itemFilter,
                         }}
                       />
@@ -242,7 +238,6 @@ export function ItemSelector({
                             position: 'absolute',
                             top: 8,
                             right: 8,
-                            bgcolor: 'background.paper',
                             borderRadius: '50%',
                           }}
                         />
@@ -270,11 +265,9 @@ export function ItemSelector({
       {/* Detail panel */}
       <Box
         sx={{
-          borderLeft: { md: 1 },
           borderTop: { xs: 1, md: 0 },
-          borderColor: 'secondary',
+          borderColor: 'divider',
           p: 2,
-          bgcolor: 'background.paper',
         }}
       >
         {item && formData && formData.itemTypeId && (

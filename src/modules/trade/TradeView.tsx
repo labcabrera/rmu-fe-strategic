@@ -9,6 +9,7 @@ import {
   fetchCharacter,
   GenericAvatar,
   LayoutBase,
+  TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
 import TradeViewItemSearch from './TradeViewItemSearch';
@@ -90,10 +91,10 @@ export default function TradeView() {
                 <TradeViewItemSearch formData={itemFormData} setFormData={setItemFormData} />
               </Grid>
             )}
-            <Grid size={12}>
-              <pre>{JSON.stringify(formData, null, 2)}</pre>
-            </Grid>
           </Grid>
+          <TechnicalInfo>
+            <pre>{JSON.stringify(formData, null, 2)}</pre>
+          </TechnicalInfo>
         </Box>
       )}
     </LayoutBase>

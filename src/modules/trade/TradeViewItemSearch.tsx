@@ -8,7 +8,7 @@ const TradeViewItemSearch: FC<{
 }> = ({ formData, setFormData }) => {
   return (
     <Section>
-      <ItemSelector formData={formData} setFormData={setFormData} />;
+      <ItemSelector formData={formData} setFormData={setFormData} />
     </Section>
   );
 };
