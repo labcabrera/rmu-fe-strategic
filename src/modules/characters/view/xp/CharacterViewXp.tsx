@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Badge, Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Badge, Box, Button, Divider, Grid, Paper, Stack, Typography } from '@mui/material';
 import {
   AddButton,
   NumericInput,
@@ -109,26 +109,79 @@ const CharacterViewExperience: FC<{
         open={openAddXpDialog}
         title={t('add-xp')}
         subtitle={`${t('experience-multiplier')}: x${experienceMultiplier}`}
-        onCancel={handleClose}
-        onConfirm={handleAdd}
-        onConfirmDisabled={!baseXp || baseXp < 1 || totalXp < 1}
+        buttons={[
+          <Button variant="contained" onClick={handleClose}>
+            Close
+          </Button>,
+          <Button
+            variant="contained"
+            onClick={handleAdd}
+            color="success"
+            disabled={!baseXp || baseXp < 1 || totalXp < 1}
+          >
+            Add
+          </Button>,
+        ]}
       >
         <Stack spacing={2}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             Personal events award experience when the character fulfills a personal desire or learns from a meaningful
             failure. Use the base award and the game multiplier to calculate the final XP.
           </Typography>
-          <Stack spacing={0.5}>
-            <Typography variant="body2">
-              <strong>Minor Personal Event:</strong> 10-100 EP
+          <Typography variant="body1" color="secondary">
+            More info in <em>12.4. Awarding Experience</em> in Core Law.
+          </Typography>
+          <Paper elevation={-2} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {t('personal-events')}
             </Typography>
-            <Typography variant="body2">
-              <strong>Moderate Personal Event:</strong> 100-500 EP
+            <Stack spacing={1}>
+              <Typography variant="body1">
+                <strong>Minor Personal Event:</strong> 10-100 EP. Achieving one of the character's desires without a
+                specific plan.
+              </Typography>
+              <Typography variant="body1">
+                <strong>Moderate Personal Event:</strong> 100-500 EP. Character was specifically working to achieve that
+                desire when it happened.
+              </Typography>
+              <Typography variant="body1">
+                <strong>Major Personal Event:</strong> 500-1000 EP. Something that has required longer-range planning
+                and effort to achieve.
+              </Typography>
+            </Stack>
+          </Paper>
+          <Paper elevation={-2} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {t('sesion-events')}
             </Typography>
-            <Typography variant="body2">
-              <strong>Major Personal Event:</strong> 500-1000 EP
+            <Stack spacing={1}>
+              <Typography variant="body1">
+                <strong>Minor Session Event:</strong> 100-500 EP.
+              </Typography>
+              <Typography variant="body1">
+                <strong>Moderate Session Event:</strong> 500-1000 EP.
+              </Typography>
+              <Typography variant="body1">
+                <strong>Major Session Event:</strong> 1000-5000 EP.
+              </Typography>
+            </Stack>
+          </Paper>
+          <Paper elevation={-2} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {t('story-events')}
             </Typography>
-          </Stack>
+            <Stack spacing={1}>
+              <Typography variant="body1">
+                <strong>Minor Story Event:</strong> 10-100 EP.
+              </Typography>
+              <Typography variant="body1">
+                <strong>Moderate Story Event:</strong> 100-500 EP.
+              </Typography>
+              <Typography variant="body1">
+                <strong>Major Story Event:</strong> 500-1000 EP.
+              </Typography>
+            </Stack>
+          </Paper>
           <Divider />
           <Stack
             direction={{ xs: 'column', sm: 'row' }}

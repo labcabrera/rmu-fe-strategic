@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import { Box, Card, CardContent, Divider, LinearProgress, Stack, Typography } from '@mui/material';
 import {
   Character,
@@ -168,7 +169,7 @@ export default function CharacterViewResume({
                 />
                 {character.power && (
                   <MetricProgress
-                    icon={<FavoriteBorderIcon />}
+                    icon={<WaterDropIcon />}
                     label={t('power')}
                     value={`${character.power.current} / ${character.power.max}`}
                     progress={hpPercent}
