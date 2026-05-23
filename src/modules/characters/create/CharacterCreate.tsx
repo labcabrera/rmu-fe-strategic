@@ -6,7 +6,6 @@ import OutboundIcon from '@mui/icons-material/Outbound';
 import { Grid, IconButton, Badge, Box, Typography } from '@mui/material';
 import {
   CancelButton,
-  CategorySeparator,
   Character,
   createCharacter,
   CreateCharacterDto,
@@ -297,15 +296,19 @@ export default function CharacterCreate() {
           </Section>
         </Grid>
         <Grid size={12}>
-          <Section>
-            <CategorySeparator text={t('statistics')}>
-              <RefreshButton onClick={onRandomStats} />
-              <Badge badgeContent={2} color="success">
-                <IconButton onClick={() => setBoostDialogOpen(true)} color="primary">
-                  <OutboundIcon />
-                </IconButton>
-              </Badge>
-            </CategorySeparator>
+          <Section
+            title={t('statistics')}
+            actions={
+              <>
+                <RefreshButton onClick={onRandomStats} />
+                <Badge badgeContent={2} color="success">
+                  <IconButton onClick={() => setBoostDialogOpen(true)} color="primary">
+                    <OutboundIcon />
+                  </IconButton>
+                </Badge>
+              </>
+            }
+          >
             <Grid container spacing={1}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <CharacterCreateStats formData={formData} statBonusFormData={statBonusFormData} />

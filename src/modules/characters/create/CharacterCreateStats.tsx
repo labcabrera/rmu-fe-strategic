@@ -14,7 +14,7 @@ export default function CharacterCreateStats({
   const { t } = useTranslation();
 
   return (
-    <Table sx={{ minWidth: 650 }} aria-label="stats table" size="small">
+    <Table sx={{ minWidth: 650, '& .MuiTableCell-root': { typography: 'body1' } }} aria-label="stats table">
       <TableHead>
         <TableRow>
           <TableCell align="left">Stat</TableCell>
@@ -53,8 +53,7 @@ const Row: FC<{
   const getTotal = (): number => {
     const stat = formData.statistics[statKey];
     const bonus = statBonusFormData[statKey];
-    //TODO
-    const racial = 0;
+    const racial = stat.racial || 0;
     return racial + bonus.temporary;
   };
 
@@ -87,7 +86,7 @@ const Row: FC<{
         <TableCell
           align="right"
           sx={{
-            color: getColor(formData.statistics[statKey].racial),
+            color: getColor(formData.statistics[statKey].racial || 0),
           }}
         >
           {formData.statistics[statKey].racial}
