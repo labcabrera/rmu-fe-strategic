@@ -1,14 +1,13 @@
 import React, { useState, SyntheticEvent, ReactNode, FC, Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
-import { Character, StrategicGame, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Character, StrategicGame, Profession, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CharacterViewAttacks from './CharacterViewAttacks';
 import CharacterViewInfo from './CharacterViewInfo';
 import CharacterViewMovement from './CharacterViewMovement';
 import CharacterViewResistances from './CharacterViewResistances';
 import CharacterEquipmentButtons from './items/CharacterEquipmentButtons';
 import CharacterEquipmentPanel from './items/CharacterEquipmentPanel';
-import CharacterViewItems from './items/CharacterViewItems';
 import CharacterViewSkills from './skills/CharacterViewSkills';
 import CharacterViewStats from './stats/CharacterViewStats';
 import CharacterViewTraits from './traits/CharacterViewTraits';
@@ -59,7 +58,7 @@ const CharacterViewTabs: FC<{
           <Tab label={t('attacks')} {...a11yProps(6)} />
           <Tab label={t('movement')} {...a11yProps(7)} />
           <Tab label={t('xp')} {...a11yProps(8)} />
-          <Tab label={t('debug')} {...a11yProps(9)} />
+          <Tab label={t('healing')} {...a11yProps(9)} />
         </Tabs>
       </Box>
 
@@ -101,8 +100,12 @@ const CharacterViewTabs: FC<{
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={9}>
-        <pre>Character: {JSON.stringify(character, null, 2)}</pre>
+        TODO: healing
       </CustomTabPanel>
+
+      <TechnicalInfo>
+        <pre>Character: {JSON.stringify(character, null, 2)}</pre>
+      </TechnicalInfo>
     </Box>
   );
 };
