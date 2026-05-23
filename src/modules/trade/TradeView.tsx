@@ -2,8 +2,14 @@ import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
-import { Box, Grid, Tab, Tabs } from '@mui/material';
-import { Character, fetchCharacter, LayoutBase } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
+import {
+  AddItemDto,
+  Character,
+  fetchCharacter,
+  GenericAvatar,
+  LayoutBase,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
 import TradeViewItemSearch from './TradeViewItemSearch';
 import TradeViewOptions from './TradeViewOptions';
@@ -27,6 +33,7 @@ export default function TradeView() {
     itemType: 'normal',
     languageOptions: 'none',
   });
+  const [itemFormData, setItemFormData] = useState<AddItemDto>({} as AddItemDto);
 
   useEffect(() => {
     if (characterId) {
@@ -50,7 +57,12 @@ export default function TradeView() {
         { name: t('characters'), link: '/strategic/characters' },
         { name: t('trade') },
       ]}
-      leftPanel={character?.name || t('resume')}
+      leftPanel={
+        <>
+          <Typography>{character?.name}</Typography>
+          <GenericAvatar imageUrl={character?.imageUrl || ''} />
+        </>
+      }
     >
       {loading ? (
         <p>{t('loading')}...</p>
@@ -70,10 +82,14 @@ export default function TradeView() {
             </Tabs>
           </Box>
           <Grid container spacing={1}>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={12}>
               <TradeViewOptions formData={formData} setFormData={setFormData} />
             </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>{formData.option === 'buy' && <TradeViewItemSearch />}</Grid>
+            {formData.option === 'buy' && (
+              <Grid size={12}>
+                <TradeViewItemSearch formData={itemFormData} setFormData={setItemFormData} />
+              </Grid>
+            )}
             <Grid size={12}>
               <pre>{JSON.stringify(formData, null, 2)}</pre>
             </Grid>
