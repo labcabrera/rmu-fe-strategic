@@ -12,6 +12,7 @@ import {
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
+import TradeManeuverForm from './TradeManeuverForm';
 import TradeViewItemSearch from './TradeViewItemSearch';
 import TradeViewOptions from './TradeViewOptions';
 import { TradeViewFormData } from './TradeViewOptionsForm';
@@ -91,6 +92,9 @@ export default function TradeView() {
                 <TradeViewItemSearch formData={itemFormData} setFormData={setItemFormData} />
               </Grid>
             )}
+            <Grid size={12}>
+              <TradeManeuverForm character={character} action={formData.option} />
+            </Grid>
           </Grid>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
