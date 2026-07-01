@@ -1,9 +1,21 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { Box, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { CategorySeparator, AddButton, Character, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  alpha,
+  Box,
+  InputAdornment,
+  IconButton,
+  Stack,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
+import { AddButton, Character, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
 import AddSkillDialog from './AddSkillDialog';
 import CharacterSkillList from './CharacterSkillList';
 import CharacterSkillTable from './CharacterSkillTable';
@@ -17,6 +29,7 @@ const CharacterViewSkills: FC<{
 }> = ({ character, setCharacter, profession }) => {
   const { t } = useTranslation();
   const [openAddSkillDialog, setOpenAddSkillDialog] = useState(false);
+  const [skillNameFilter, setSkillNameFilter] = useState('');
   const [displaySkillTable, setDisplaySkillTable] = useState<boolean>(() => {
     try {
       return localStorage.getItem(STORAGE_KEY) === 'true';
@@ -34,32 +47,97 @@ const CharacterViewSkills: FC<{
     } catch (ignore) {}
   };
 
+  const normalizedFilter = skillNameFilter.trim().toLowerCase();
+  const filteredSkills = useMemo(() => {
+    if (!normalizedFilter) return character.skills;
+
+    return character.skills.filter((skill) => {
+      const skillName = t(skill.skillId).toLowerCase();
+      const specialization = skill.specialization ? t(skill.specialization).toLowerCase() : '';
+      return skillName.includes(normalizedFilter) || specialization.includes(normalizedFilter);
+    });
+  }, [character.skills, normalizedFilter, t]);
+
   return (
     <>
-      <CategorySeparator text={t('skills')}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-          <AddButton onClick={() => setOpenAddSkillDialog(true)} />
-          <ToggleButtonGroup
-            value={displaySkillTable ? 'table' : 'list'}
-            exclusive
-            size="small"
-            onChange={handleViewModeChange}
-            aria-label="view-mode"
+      <Stack spacing={1.5} sx={{ mb: 1.5 }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1.5}
+          sx={{ alignItems: { xs: 'stretch', sm: 'center' }, justifyContent: 'space-between' }}
+        >
+          <Box>
+            <Typography variant="h6" color="primary">
+              {t('skills')}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {t('manage-character-skills')}
+            </Typography>
+          </Box>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              flexWrap: 'wrap',
+              rowGap: 1,
+            }}
           >
-            <ToggleButton value="list" aria-label="list">
-              <ViewListIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton value="table" aria-label="table">
-              <TableRowsIcon fontSize="small" />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-      </CategorySeparator>
+            <TextField
+              size="small"
+              value={skillNameFilter}
+              onChange={(event) => setSkillNameFilter(event.target.value)}
+              placeholder={t('search-skill-specialization')}
+              aria-label={t('filter-skills')}
+              sx={{ width: { xs: '100%', sm: 280 } }}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon fontSize="small" />
+                    </InputAdornment>
+                  ),
+                  endAdornment: skillNameFilter ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={t('clear')}
+                        edge="end"
+                        size="small"
+                        onClick={() => setSkillNameFilter('')}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ) : undefined,
+                },
+              }}
+            />
+            <AddButton onClick={() => setOpenAddSkillDialog(true)} />
+            <ToggleButtonGroup
+              value={displaySkillTable ? 'table' : 'list'}
+              exclusive
+              size="small"
+              onChange={handleViewModeChange}
+              aria-label="view-mode"
+            >
+              <ToggleButton value="list" aria-label="list">
+                <ViewListIcon fontSize="small" />
+              </ToggleButton>
+              <ToggleButton value="table" aria-label="table">
+                <TableRowsIcon fontSize="small" />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
+        </Stack>
+
+        <DevelopmentPointsProgress available={character.experience.availableDevPoints} total={character.experience.devPoints} />
+      </Stack>
 
       {displaySkillTable ? (
-        <CharacterSkillTable character={character} setCharacter={setCharacter} profession={profession} />
+        <CharacterSkillTable character={character} skills={filteredSkills} setCharacter={setCharacter} profession={profession} />
       ) : (
-        <CharacterSkillList character={character} />
+        <CharacterSkillList character={character} skills={filteredSkills} />
       )}
       <AddSkillDialog
         open={openAddSkillDialog}
@@ -70,5 +148,46 @@ const CharacterViewSkills: FC<{
     </>
   );
 };
+
+function DevelopmentPointsProgress({ available, total }: { available: number; total: number }) {
+  const { t } = useTranslation();
+  const safeTotal = Math.max(total, 0);
+  const ratio = safeTotal > 0 ? Math.max(0, Math.min(available / safeTotal, 1)) : 0;
+  const segments = 12;
+  const filledSegments = Math.round(ratio * segments);
+
+  return (
+    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ alignItems: { xs: 'stretch', sm: 'center' } }}>
+      <Typography variant="body2" color="text.secondary" sx={{ flex: 'none' }}>
+        {t('dp-available')}: <b>{available}</b> / {total}
+      </Typography>
+      <Stack
+        direction="row"
+        spacing={0.25}
+        aria-label="development-points-progress"
+        sx={{
+          width: { xs: '100%', sm: 220 },
+          height: 8,
+          p: 0.25,
+          borderRadius: 999,
+          bgcolor: (theme) => alpha(theme.palette.success.main, 0.08),
+          overflow: 'hidden',
+        }}
+      >
+        {Array.from({ length: segments }, (_, index) => (
+          <Box
+            key={index}
+            sx={(theme) => ({
+              flex: 1,
+              borderRadius: 999,
+              bgcolor: index < filledSegments ? theme.palette.success.light : alpha(theme.palette.common.white, 0.06),
+              boxShadow: index < filledSegments ? `0 0 8px ${alpha(theme.palette.success.light, 0.35)}` : 'none',
+            })}
+          />
+        ))}
+      </Stack>
+    </Stack>
+  );
+}
 
 export default CharacterViewSkills;

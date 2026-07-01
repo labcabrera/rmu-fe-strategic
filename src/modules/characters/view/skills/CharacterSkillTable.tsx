@@ -43,14 +43,17 @@ const maxKnackSkills = 2;
 
 export default function CharacterSkillTable({
   character,
+  skills,
   setCharacter,
   profession,
 }: {
   character: Character;
+  skills?: CharacterSkill[];
   setCharacter: Dispatch<SetStateAction<Character | undefined>>;
   profession?: Profession;
 }) {
   const { t } = useTranslation();
+  const displayedSkills = skills ?? character.skills;
   const currentKnackSkills = character.skills.filter((s) => s.professional?.includes('knack')).length;
   const currentProfessionalSkills = character.skills.filter((s) => s.professional?.includes('professional')).length;
 
@@ -99,16 +102,12 @@ export default function CharacterSkillTable({
               </Tooltip>
             </TableCell>
             <TableCell align="left" sx={{ minWidth: 220 }}>
-              <Tooltip title={t('Development points available / total')}>
-                <Typography variant="subtitle2">
-                  DP: {character.experience.availableDevPoints} / {character.experience.devPoints}
-                </Typography>
-              </Tooltip>
+              {t('Actions')}
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {character?.skills.map((item, index) => (
+          {displayedSkills.map((item, index) => (
             <SkillRow
               key={index}
               skill={item}
@@ -119,6 +118,15 @@ export default function CharacterSkillTable({
               currentProfessionalSkills={currentProfessionalSkills}
             />
           ))}
+          {displayedSkills.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={9}>
+                <Typography variant="body2" color="text.secondary">
+                  {t('not-found-skills')}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </Paper>

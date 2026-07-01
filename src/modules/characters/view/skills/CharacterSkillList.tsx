@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
-import { Character, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Character, CharacterSkill, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { defaultImage } from '../../../services/image-service';
 
-const CharacterSkillList: FC<{ character: Character }> = ({ character }) => {
+const CharacterSkillList: FC<{ character: Character; skills?: CharacterSkill[] }> = ({ character, skills: displayedSkills }) => {
   const { t } = useTranslation();
-  const skills = character?.skills || [];
+  const skills = displayedSkills ?? character?.skills ?? [];
 
   return (
     <>
