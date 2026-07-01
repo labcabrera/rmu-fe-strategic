@@ -88,7 +88,7 @@ const CharacterViewSkills: FC<{
               size="small"
               value={skillNameFilter}
               onChange={(event) => setSkillNameFilter(event.target.value)}
-              placeholder={t('search-skill-specialization')}
+              placeholder={t('search-skill')}
               aria-label={t('filter-skills')}
               sx={{ width: { xs: '100%', sm: 280 } }}
               slotProps={{
@@ -131,11 +131,19 @@ const CharacterViewSkills: FC<{
           </Stack>
         </Stack>
 
-        <DevelopmentPointsProgress available={character.experience.availableDevPoints} total={character.experience.devPoints} />
+        <DevelopmentPointsProgress
+          available={character.experience.availableDevPoints}
+          total={character.experience.devPoints}
+        />
       </Stack>
 
       {displaySkillTable ? (
-        <CharacterSkillTable character={character} skills={filteredSkills} setCharacter={setCharacter} profession={profession} />
+        <CharacterSkillTable
+          character={character}
+          skills={filteredSkills}
+          setCharacter={setCharacter}
+          profession={profession}
+        />
       ) : (
         <CharacterSkillList character={character} skills={filteredSkills} />
       )}

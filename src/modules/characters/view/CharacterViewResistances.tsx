@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { CategorySeparator, Character } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { imageBaseUrl } from '../../services/config';
 
 const CharacterViewResistances: FC<{
   character: Character;
@@ -14,11 +15,37 @@ const CharacterViewResistances: FC<{
     return 'inherit';
   };
 
+  const getImage = (resistance: string) => {
+    switch (resistance) {
+      case 'poison':
+      case 'disease':
+      case 'fear':
+      case 'physical':
+        return `${imageBaseUrl}images/generic/${resistance}.png`;
+      default:
+        return `${imageBaseUrl}images/generic/stat-st.png`;
+    }
+  };
+
   return (
     <>
       <CategorySeparator text={t('Resistances')} />
-      <Paper sx={{ width: 'fit-content', padding: 2 }}>
-        <Table sx={{ minWidth: 650, maxWidth: 800 }} aria-label="stats table">
+      <Paper sx={{ width: 'fit-content', overflow: 'hidden' }}>
+        <Table
+          size="small"
+          sx={{
+            minWidth: 520,
+            maxWidth: 640,
+            '& .MuiTableCell-root': {
+              py: 0.75,
+              px: 1.5,
+            },
+            '& .MuiTableRow-root': {
+              height: 44,
+            },
+          }}
+          aria-label="stats table"
+        >
           <TableHead
             sx={{
               '& .MuiTableCell-root': {
@@ -28,19 +55,46 @@ const CharacterViewResistances: FC<{
             }}
           >
             <TableRow>
-              <TableCell align="left">{t('resistance')}</TableCell>
-              <TableCell align="right">{t('stat')}</TableCell>
-              <TableCell align="right">{t('racial')}</TableCell>
-              <TableCell align="right">{t('realm')}</TableCell>
-              <TableCell align="right">{t('custom')}</TableCell>
-              <TableCell align="right">{t('total')}</TableCell>
+              <TableCell align="left" sx={{ minWidth: 180 }}>
+                {t('resistance')}
+              </TableCell>
+              <TableCell align="right" sx={{ width: 64 }}>
+                {t('stat')}
+              </TableCell>
+              <TableCell align="right" sx={{ width: 64 }}>
+                {t('racial')}
+              </TableCell>
+              <TableCell align="right" sx={{ width: 64 }}>
+                {t('realm')}
+              </TableCell>
+              <TableCell align="right" sx={{ width: 64 }}>
+                {t('custom')}
+              </TableCell>
+              <TableCell align="right" sx={{ width: 64 }}>
+                {t('total')}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {character.resistances.map((resistance) => (
               <TableRow key={resistance.resistance} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  {t(resistance.resistance)}
+                  <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                    <Box
+                      component="img"
+                      src={getImage(resistance.resistance)}
+                      alt={t(resistance.resistance)}
+                      sx={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: 0.75,
+                        objectFit: 'cover',
+                        filter: 'grayscale(0.7)',
+                        flex: 'none',
+                      }}
+                    />
+                    <Box component="span">{t(resistance.resistance)}</Box>
+                  </Stack>
                 </TableCell>
                 <TableCell align="right" sx={{ color: getColor(resistance.statBonus) }}>
                   {resistance.statBonus}
