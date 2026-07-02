@@ -1,12 +1,13 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import {
   addCharacterSkill,
   AddSkill,
   Character,
   fetchSkill,
+  RmuDialog,
   Skill,
   SkillSelector,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -70,25 +71,26 @@ export default function AddSkillDialog({
   }, [formData]);
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-      <DialogTitle>{t('add-skill')}</DialogTitle>
-      <DialogContent>
-        <Grid container spacing={1}>
-          <Grid size={12}>
-            <SkillSelector
-              onSkillChange={(v) => onSelectedSkill(v || '')}
-              onSpecializationChange={(v) => setFormData({ ...formData, specialization: v })}
-              onError={(err) => showError(err)}
-            />
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>{t('close')}</Button>
+    <RmuDialog
+      title={t('add-skill')}
+      open={open}
+      onClose={handleClose}
+      maxWidth="lg"
+      buttons={
         <Button onClick={onAddSkill} variant="contained" disabled={!validFormData}>
           {t('add')}
         </Button>
-      </DialogActions>
-    </Dialog>
+      }
+    >
+      <Grid container spacing={1}>
+        <Grid size={12}>
+          <SkillSelector
+            onSkillChange={(v) => onSelectedSkill(v || '')}
+            onSpecializationChange={(v) => setFormData({ ...formData, specialization: v })}
+            onError={(err) => showError(err)}
+          />
+        </Grid>
+      </Grid>
+    </RmuDialog>
   );
 }
