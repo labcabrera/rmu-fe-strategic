@@ -75,7 +75,7 @@ export default function AddSkillDialog({
       title={t('add-skill')}
       open={open}
       onClose={handleClose}
-      maxWidth="lg"
+      maxWidth="xl"
       buttons={
         <Button onClick={onAddSkill} variant="contained" disabled={!validFormData}>
           {t('add')}

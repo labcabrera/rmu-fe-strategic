@@ -22,18 +22,18 @@ const StatLevelUpDialog: FC<{
 }> = ({ character, stat, open, setCharacter, onClose }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-
-  if (!character || !stat) return;
-
   const { showError } = useError();
   const [roll, setRoll] = useState<number>();
   const [minRoll, setMinRoll] = useState<number>();
   const [maxRoll, setMaxRoll] = useState<number>();
   const [diceRoll, setDiceRoll] = useState<string>();
-  const potential = character.statistics[stat].potential;
-  const temporary = character.statistics[stat].temporary;
+  const selectedStat = stat ? character.statistics[stat] : undefined;
+  const potential = selectedStat?.potential;
+  const temporary = selectedStat?.temporary;
 
   const onLevelUp = () => {
+    if (!stat || roll === undefined) return;
+
     const dto = { stat: stat, roll: roll } as UpdateTemporaryStatDto;
     updateCharacterTemporaryStat(character.id, dto, auth)
       .then((response) => {
@@ -44,6 +44,8 @@ const StatLevelUpDialog: FC<{
   };
 
   const calculateDiceRoll = () => {
+    if (temporary === undefined) return;
+
     if (temporary < 7) updateDiceRoll('d3 - 1', 0, 2);
     else if (temporary < 9) updateDiceRoll('d3', 1, 3);
     else if (temporary < 19) updateDiceRoll('d6', 1, 6);
@@ -53,17 +55,21 @@ const StatLevelUpDialog: FC<{
     else updateDiceRoll('d3 - 1', 0, 2);
   };
 
-  const updateDiceRoll = (diceRoll: string, min: number, max: number) => {
+  const updateDiceRoll = (diceRoll?: string, min?: number, max?: number) => {
     setDiceRoll(diceRoll);
     setMinRoll(min);
     setMaxRoll(max);
   };
 
   useEffect(() => {
-    if (stat && character) {
+    if (stat && selectedStat) {
       calculateDiceRoll();
+    } else {
+      updateDiceRoll(undefined, undefined, undefined);
     }
-  }, [stat, character]);
+  }, [stat, selectedStat]);
+
+  if (!stat || !selectedStat) return null;
 
   return (
     <RmuDialog
@@ -71,7 +77,7 @@ const StatLevelUpDialog: FC<{
       open={open}
       onCancel={onClose}
       onConfirm={onLevelUp}
-      onConfirmDisabled={!roll}
+      onConfirmDisabled={roll === undefined}
     >
       <Grid container spacing={1}>
         <Grid size={gridSizeCard}>
